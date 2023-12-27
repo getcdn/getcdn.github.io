@@ -7,8 +7,6 @@ clone_sync_push() {
     local local_path="$3"
     local repo_name="$4"
 
-    echo "Cloning, syncing, and pushing changes for $repo_name"
-
     # Clone the source repository
     rm -rf "$local_path"
     git clone --depth=1 "$source_repo" "$local_path"
@@ -73,7 +71,7 @@ clone_sync_push() {
             git add .
 
             # Commit changes
-            git commit -a -m "Sync changes"
+            git commit -am "Sync changes"
 
             # Push changes
             git push --force origin main
