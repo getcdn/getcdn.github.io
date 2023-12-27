@@ -16,17 +16,11 @@ clone_sync_push() {
     # Set write permissions for the local path
     chmod +w -R "$local_path"
 
-    # Copy files to the local repository
-    cp "./Downloads/auto_git.log" "$local_path"
+    # Copy auto_commit.sh to the local repository
     cp "./Downloads/auto_commit.sh" "$local_path"
 
     (
         cd "$local_path" || exit 1
-
-        # Add auto_git.log to .gitignore
-        if ! grep -q "auto_git.log" .gitignore; then
-            echo "auto_git.log" >>.gitignore
-        fi
 
         # Add auto_commit.sh to .gitignore
         if ! grep -q "auto_commit.sh" .gitignore; then
@@ -59,9 +53,19 @@ clone_sync_push() {
         # Commit changes
         git commit -am "Sync changes from stash"
 
-        # Add files to track it
-        git add -f auto_git.log
+        # Add auto_commit.sh to track it
         git add -f auto_commit.sh
+
+        # Copy auto_git.log to the local repository
+        cp "./Downloads/auto_git.log" "$local_path"
+
+        # Add auto_git.log to .gitignore
+        if ! grep -q "auto_git.log" .gitignore; then
+            echo "auto_git.log" >>.gitignore
+        fi
+
+        # Add auto_git.log to track it
+        git add -f auto_git.log
 
         # Remove or modify this condition if you want to force commit and push every time
         if true; then
