@@ -9,28 +9,29 @@ clone_sync_push() {
 
     echo "Cloning, syncing, and pushing changes for $repo_name"
 
-	# Clone the source repository
+    # Clone the source repository
     rm -rf "$local_path"
     git clone --depth=1 "$source_repo" "$local_path"
-	
+
     # Set write permissions for the local path
-    chmod +w -R "$local_path"	
-	
+    chmod +w -R "$local_path"
+
+    # Copy files to the local repository
     cp "./Downloads/auto_git.log" "$local_path"
-	cp "./Downloads/auto_commit.sh" "$local_path"
+    cp "./Downloads/auto_commit.sh" "$local_path"
 
     (
         cd "$local_path" || exit 1
-		
-		# Add auto_git.log to .gitignore	
+
+        # Add auto_git.log to .gitignore
         if ! grep -q "auto_git.log" .gitignore; then
-            echo "auto_git.log" >> .gitignore
-		fi
-		
-		# Add auto_commit.sh to .gitignore	
+            echo "auto_git.log" >>.gitignore
+        fi
+
+        # Add auto_commit.sh to .gitignore
         if ! grep -q "auto_commit.sh" .gitignore; then
-            echo "auto_commit.sh" >> .gitignore
-		fi
+            echo "auto_commit.sh" >>.gitignore
+        fi
 
         # Set the correct remote URL for the destination repository
         git remote set-url origin "$destination_repo"
@@ -60,21 +61,21 @@ clone_sync_push() {
 
         # Add files to track it
         git add -f auto_git.log
-		git add -f auto_commit.sh
+        git add -f auto_commit.sh
 
-		# Remove or modify this condition if you want to force commit and push every time
-		if true; then
-			# Add all changes
-			git add .
+        # Remove or modify this condition if you want to force commit and push every time
+        if true; then
+            # Add all changes
+            git add .
 
-			# Commit changes
-			git commit -a -m "Sync changes"
+            # Commit changes
+            git commit -a -m "Sync changes"
 
-			# Push changes
-			git push --force origin main
-		else
-			echo "No new changes to sync."
-		fi
+            # Push changes
+            git push --force origin main
+        else
+            echo "No new changes to sync."
+        fi
     )
 }
 
@@ -88,3 +89,4 @@ mkdir -p "$local_path_getcdn"
 
 # Clone, sync, and push changes for each repository
 clone_sync_push "$source_repo_getcdn" "$destination_repo_getcdn" "$local_path_getcdn" "getcdn"
+
