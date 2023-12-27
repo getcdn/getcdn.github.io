@@ -9,20 +9,15 @@ clone_sync_push() {
 
     echo "Cloning, syncing, and pushing changes for $repo_name"
 
-    # Set write permissions for the local path
-    chmod +w -R "$local_path"
-	
-	# Add read permission for auto_git.log
-    chmod +r "/var/log/auto_git.log"
-	
 	# Clone the source repository
     rm -rf "$local_path"
     git clone --depth=1 "$source_repo" "$local_path"
-	echo "Copying $source_repo to $local_path"
-    cp "/var/log/auto_git.log" "$local_path"
-	echo "Copying auto_git.log to $local_path"
+	
+    # Set write permissions for the local path
+    chmod +w -R "$local_path"	
+	
+    cp "./Downloads/auto_git.log" "$local_path"
 	cp "./Downloads/auto_commit.sh" "$local_path"
-	echo "Copying auto_commit.sh to $local_path"
 
     (
         cd "$local_path" || exit 1
