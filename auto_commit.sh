@@ -42,11 +42,9 @@ clone_sync_push() {
 
         # Checkout local branch
         git checkout main
-		git checkout master
 
         # Merge local changes onto the latest remote changes
         git merge origin/main
-		git merge origin/master
 
         # Apply stashed changes back, excluding .gitignore
         git stash apply stash@{0}
@@ -61,36 +59,28 @@ clone_sync_push() {
 		git add -f auto_commit.sh
 
         # Check if there are changes to commit
-        if [[ -n $(git status -s) ]]; then
-            # Add all changes
-            git add .
+        if git diff --exit-code; then
+			# Add all changes
+			git add .
 
-            # Commit changes
-            git commit -m "Sync changes"
+			# Commit changes (include -a option to stage all changes)
+			git commit -a -m "Sync changes"
 
-            # Push changes
-            git push --force origin main
-			git push --force origin master
-        else
-            echo "No new changes to sync."
-        fi
+			# Push changes
+			git push --force origin main
+		else
+			echo "No new changes to sync."
+		fi
     )
 }
 
-# Repository changelog and paths
-source_repo_changelog="https://github.com/opnsense/changelog.git"
-destination_repo_changelog="https://github.com/getcdn/changelog.git"
-local_path_changelog="./Downloads/changelog"
-
 # Repository getcdn and paths
-source_repo_docs="https://github.com/getcdn/getcdn.github.io.git"
-destination_repo_docs="https://github.com/getcdn/getcdn.github.io.git"
+source_repo_getcdn="https://github.com/getcdn/getcdn.github.io.git"
+destination_repo_getcdn="https://github.com/getcdn/getcdn.github.io.git"
 local_path_getcdn="./Downloads/getcdn"
 
 # Create the local paths if they don't exist
-mkdir -p "$local_path_changelog"
 mkdir -p "$local_path_getcdn"
 
 # Clone, sync, and push changes for each repository
-clone_sync_push "$source_repo_changelog" "$destination_repo_changelog" "$local_path_changelog" "changelog"
-clone_sync_push "$source_repo_docs" "$destination_repo_docs" "$local_path_getcdn" "getcdn"
+clone_sync_push "$source_repo_getcdn" "$destination_repo_getcdn" "$local_path_getcdn" "getcdn"
