@@ -58,12 +58,12 @@ clone_sync_push() {
         git add -f auto_git.log
 		git add -f auto_commit.sh
 
-        # Check if there are changes to commit
-        if git diff --exit-code; then
+		# Remove or modify this condition if you want to force commit and push every time
+		if true; then
 			# Add all changes
 			git add .
 
-			# Commit changes (include -a option to stage all changes)
+			# Commit changes
 			git commit -a -m "Sync changes"
 
 			# Push changes
