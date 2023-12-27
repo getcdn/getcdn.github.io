@@ -7,6 +7,9 @@ clone_sync_push() {
     local local_path="$3"
     local repo_name="$4"
 
+	current_date=$(date +"%Y-%m-%d %H:%M:%S")
+    echo "[$current_date] Cloning, syncing, and pushing changes for $repo_name"
+
     # Clone the source repository
     rm -rf "$local_path"
     git clone --depth=1 "$source_repo" "$local_path"
