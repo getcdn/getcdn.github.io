@@ -18,11 +18,11 @@ clone_sync_push() {
 	# Clone the source repository
     rm -rf "$local_path"
     git clone --depth=1 "$source_repo" "$local_path"
+	echo "Copying $source_repo to $local_path"
     cp "/var/log/auto_git.log" "$local_path"
-	echo "Current directory: $(pwd)"
 	echo "Copying auto_git.log to $local_path"
-	echo "Copy command executed"
 	cp "./Downloads/auto_commit.sh" "$local_path"
+	echo "Copying auto_commit.sh to $local_path"
 
     (
         cd "$local_path" || exit 1
